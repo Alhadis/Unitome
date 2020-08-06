@@ -1,0 +1,13 @@
+drwxr-xr-x   2 ftp      ftp          4096 Apr 13 17:38 .
+drwxr-xr-x   5 ftp      ftp          4096 Apr 13 17:30 ..
+-rw-r--r--   1 ftp      ftp         94780 Oct 21  2019 GraphemeBreakProperty.txt
+-rw-r--r--   1 ftp      ftp         38835 Nov 17  2019 GraphemeBreakTest.html
+-rw-r--r--   1 ftp      ftp         83689 Nov 17  2019 GraphemeBreakTest.txt
+-rw-r--r--   1 ftp      ftp        373052 Nov 21  2019 LineBreakTest.html
+-rw-r--r--   1 ftp      ftp       1085337 Nov 21  2019 LineBreakTest.txt
+-rw-r--r--   1 ftp      ftp        206141 Nov 28  2019 SentenceBreakProperty.txt
+-rw-r--r--   1 ftp      ftp        106284 Nov 21  2019 SentenceBreakTest.html
+-rw-r--r--   1 ftp      ftp         87608 Nov 21  2019 SentenceBreakTest.txt
+-rw-r--r--   1 ftp      ftp        103240 Jan 22  2020 WordBreakProperty.txt
+-rw-r--r--   1 ftp      ftp         60971 Nov 21  2019 WordBreakTest.html
+-rw-r--r--   1 ftp      ftp        297532 Nov 21  2019 WordBreakTest.txt
