@@ -1,9 +1,8 @@
 #!/usr/bin/env node
-"use strict";
 
-const fs = require("fs");
+import {readFileSync} from "fs";
 
-const unicodeData = fs.readFileSync("UnicodeData.txt", "utf8")
+const unicodeData = readFileSync("ucd/UnicodeData.txt", "utf8")
 	.trim().split("\n").map(line => {
 		const fields = line.split(";");
 		return {
