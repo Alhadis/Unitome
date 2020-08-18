@@ -6,7 +6,7 @@ const unicodeData = readFileSync("ucd/UnicodeData.txt", "utf8")
 	.trim().split("\n").map(line => {
 		const fields = line.split(";");
 		return {
-			codePoint:          fields[0],
+			codePoint:          parseInt(fields[0], 16),
 			name:               fields[1],
 			generalCategory:    fields[2],
 			combiningClass:     fields[3],
@@ -23,3 +23,5 @@ const unicodeData = readFileSync("ucd/UnicodeData.txt", "utf8")
 			titleCaseMapping:   fields[14],
 		};
 	});
+
+console.log(unicodeData);
