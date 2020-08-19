@@ -7,3 +7,6 @@ insert_final_newline = true
 trim_trailing_whitespace = false
 indent_style = tab
 indent_size = 4
+
+[ucd/**/*.txt]
+indent_size = 8
