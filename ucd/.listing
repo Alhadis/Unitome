@@ -23,11 +23,11 @@ drwxr-xr-x   2 ftp      ftp          4096 Apr 13 17:41 extracted
 -rw-r--r--   1 ftp      ftp         48839 Aug 14  2019 IndicPositionalCategory.txt
 -rw-r--r--   1 ftp      ftp         79377 Jul 22  2019 IndicSyllabicCategory.txt
 -rw-r--r--   1 ftp      ftp          3237 Sep  9  2019 Jamo.txt
--rw-r--r--   1 ftp      ftp        239738 Feb 17 15:48 LineBreak.txt
+-rw-r--r--   1 ftp      ftp        239738 Feb 17  2020 LineBreak.txt
 -rw-r--r--   1 ftp      ftp         16055 Sep  9  2019 NameAliases.txt
 -rw-r--r--   1 ftp      ftp          3107 Jan 22  2020 NamedSequencesProv.txt
 -rw-r--r--   1 ftp      ftp         19563 Jan 22  2020 NamedSequences.txt
--rw-r--r--   1 ftp      ftp         31950 Feb 12 18:45 NamesList.html
+-rw-r--r--   1 ftp      ftp         31950 Feb 12  2020 NamesList.html
 -rw-r--r--   1 ftp      ftp       1598953 Feb 24 21:51 NamesList.txt
 -rw-r--r--   1 ftp      ftp          2116 Sep  9  2019 NormalizationCorrections.txt
 -rw-r--r--   1 ftp      ftp       2571216 Sep 10  2019 NormalizationTest.txt
@@ -43,7 +43,7 @@ drwxr-xr-x   2 ftp      ftp          4096 Apr 13 17:41 extracted
 -rw-r--r--   1 ftp      ftp        374509 Jan 28  2020 TangutSources.txt
 -rw-r--r--   1 ftp      ftp       7537310 Mar  9 23:33 UCD.zip
 -rw-r--r--   1 ftp      ftp       1851767 Oct  3  2019 UnicodeData.txt
--rw-r--r--   1 ftp      ftp       7044963 Feb 19 20:31 Unihan.zip
+-rw-r--r--   1 ftp      ftp       7044963 Feb 19  2020 Unihan.zip
 -rw-r--r--   1 ftp      ftp        213364 Oct 18  2019 USourceData.txt
 -rw-r--r--   1 ftp      ftp       1770876 Feb 25 23:14 USourceGlyphs.pdf
 -rw-r--r--   1 ftp      ftp       1702078 Feb 25 23:14 USourceRSChart.pdf

@@ -8,5 +8,8 @@ trim_trailing_whitespace = false
 indent_style = tab
 indent_size = 4
 
+[.listing]
+end_of_line = crlf
+
 [ucd/**/*.txt]
 indent_size = 8

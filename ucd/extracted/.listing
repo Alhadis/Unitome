@@ -8,7 +8,7 @@ drwxr-xr-x   5 ftp      ftp          4096 Apr 13 17:30 ..
 -rw-r--r--   1 ftp      ftp        259503 Oct 21  2019 DerivedGeneralCategory.txt
 -rw-r--r--   1 ftp      ftp         23847 Sep 10  2019 DerivedJoiningGroup.txt
 -rw-r--r--   1 ftp      ftp         37075 Jan 21  2020 DerivedJoiningType.txt
--rw-r--r--   1 ftp      ftp        236237 Feb 17 19:57 DerivedLineBreak.txt
+-rw-r--r--   1 ftp      ftp        236237 Feb 17  2020 DerivedLineBreak.txt
 -rw-r--r--   1 ftp      ftp       1775033 Sep 10  2019 DerivedName.txt
 -rw-r--r--   1 ftp      ftp         19580 Sep 10  2019 DerivedNumericType.txt
 -rw-r--r--   1 ftp      ftp        130905 Sep 10  2019 DerivedNumericValues.txt
