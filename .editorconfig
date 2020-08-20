@@ -13,3 +13,11 @@ end_of_line = crlf
 
 [ucd/**/*.txt]
 indent_size = 8
+
+[Unihan_*.txt]
+elastic_tabstops = true
+indent_size = 24
+
+[Unihan_Variants.txt]
+elastic_tabstops = true
+indent_size = 30

@@ -19,9 +19,19 @@ ucd:
 		ftp://unicode.org/Public/UNIDATA/
 
 
+# CJK database files, zipped by default
+unihan: ucd/unihan
+ucd/unihan: ucd/Unihan.zip
+	@ $(require) unzip
+	test -d "$@" || mkdir $@
+	unzip -od $@ $^
+
+ucd/Unihan.zip: ucd
+
+
 # Pull any upstream changes to the UCD
 update:
-	@$(MAKE) -B ucd
+	@$(MAKE) -B ucd unihan
 
 .PHONY: update
 
