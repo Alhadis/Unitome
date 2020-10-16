@@ -21,3 +21,4 @@ package-lock.json
 /ucd/**/*.html
 /ucd/**/*.pdf
 /ucd/**/*.zip
+/eal
