@@ -13,6 +13,11 @@ export default class UCD {
 		this.brackets = {};
 		this.mirrored = {};
 		this.radicals = {};
+		this.namedSequences = {
+			approved:    new Map(),
+			provisional: new Map(),
+		};
+		this.propertyAliases = new Map();
 	}
 	
 	[Symbol.iterator](){
@@ -158,8 +163,69 @@ export default class UCD {
 				});
 			}),
 			
-			this.read("HangulSyllableType", (code, type) => {
+			this.read("HangulSyllableType", (code, type) =>
 				this.set(code, {hangulSyllableType: type})),
+			
+			this.read("IndicPositionalCategory", (code, cat) =>
+				this.set(code, {indicPositionalCategory: cat})),
+			
+			this.read("IndicSyllabicCategory", (code, cat) =>
+				this.set(code, {indicSyllabicCategory: cat})),
+			
+			this.read("Jamo", (code, name) =>
+				this.set(code, {jamoShortName: name})),
+			
+			this.read("LineBreak", (code, type) =>
+				this.set(code, {lineBreak: type})),
+			
+			this.read("NameAliases", (code, alias, type) => {
+				const aliases = {[type]: alias};
+				code = this.parseCodePoint(code);
+				if(!this.chars.has(code))
+					this.set(code, {aliases});
+				else{
+					const char = this.get(code);
+					if(char.aliases)
+						Object.assign(char.aliases, aliases);
+					else char.aliases = aliases;
+				}
+			}),
+			
+			this.read("NamedSequences", (name, seq) => {
+				this.namedSequences.approved.set(name, this.parseCodePoint(seq));
+			}),
+
+			this.read("NamedSequencesProv", (name, seq) => {
+				this.namedSequences.provisional.set(name, this.parseCodePoint(seq));
+			}),
+			
+			this.read("NushuSources", (code, tag, value) => {
+				tag = {
+					kSrc_NushuDuben: "nushuSource",
+					kReading: "nushuCommonReading",
+				}[tag] || tag;
+				this.set(code, {[tag]: value});
+			}, "\t"),
+			
+			this.read("PropertyAliases", (...aliases) => {
+				for(const alias of aliases){
+					let value = aliases.filter(x => x !== alias);
+					if(value.length < 2)
+						[value] = value;
+					this.propertyAliases.set(alias, value || alias);
+				}
+			}),
+			
+			this.read("PropList", (code, name) =>
+				this.set(code, this.camelCase(name))),
+			
+			this.read("ScriptExtensions", (code, scripts) => {
+				scripts = scripts.split(/\s+/);
+				this.set(code, {scriptExtensions: scripts});
+			}),
+			
+			this.read("Scripts", (code, script) =>
+				this.set(code, {script})),
 		]);
 	}
 	
@@ -186,8 +252,8 @@ export default class UCD {
 		return null;
 	}
 	
-	async read(file, fn){
-		return readLines(`${this.path}/${file}.txt`, fn, {fs: ";", comment: "#"});
+	async read(file, fn, fs = ";"){
+		return readLines(`${this.path}/${file}.txt`, fn, {fs, comment: "#"});
 	}
 	
 	set(code, ...props){
