@@ -18,6 +18,7 @@ export default class UCD {
 			provisional: new Map(),
 		};
 		this.propertyAliases = new Map();
+		this.variationSequences = new Map();
 	}
 	
 	[Symbol.iterator](){
@@ -26,6 +27,7 @@ export default class UCD {
 	
 	camelCase(input){
 		return input
+			.replace(/^[A-Z]+(?=[A-Z][a-z])/, chars => chars.toLowerCase())
 			.replace(/^[A-Z]+/, chars => chars.toLowerCase())
 			.replace(/_([A-Z]+)/g, (_, chars) => chars.toUpperCase())
 			.replace(/_/g, "");
@@ -33,6 +35,8 @@ export default class UCD {
 	
 	get(code){
 		code = this.parseCodePoint(code);
+		if(!this.chars.has(code))
+			this.chars.set(code, {});
 		return this.chars.get(code);
 	}
 	
@@ -62,6 +66,15 @@ export default class UCD {
 				}
 				this.set(code, char);
 			}),
+			
+			this.read("auxiliary/GraphemeBreakProperty", (code, value) =>
+				this.set(code, {graphemeClusterBreak: value})),
+			
+			this.read("auxiliary/SentenceBreakProperty", (code, value) =>
+				this.set(code, {sentenceBreak: value})),
+			
+			this.read("auxiliary/WordBreakProperty", (code, value) =>
+				this.set(code, {wordBreakProperty: value})),
 			
 			this.read("ArabicShaping", (code, ...fields) => {
 				this.set(code, {
@@ -143,6 +156,12 @@ export default class UCD {
 						W:  "Wide",
 					}[width || "N"],
 				})),
+			
+			this.read("emoji/emoji-data", (code, prop) =>
+				this.set(code, this.camelCase(prop))),
+			
+			this.read("emoji/emoji-variation-sequences", (seq, description) =>
+				this.variationSequences.set(this.parseCodePoint(seq), {description})),
 			
 			this.read("EmojiSources", (...codes) => {
 				codes = codes.map(this.parseCodePoint.bind(this));
@@ -226,6 +245,72 @@ export default class UCD {
 			
 			this.read("Scripts", (code, script) =>
 				this.set(code, {script})),
+			
+			this.read("SpecialCasing", (code, lc, tc, uc, cond) => {
+				const char = this.get(code);
+				(char.specialCasing = char.specialCasing || []).push({
+					upperCase: this.parseCodePoint(uc),
+					lowerCase: this.parseCodePoint(lc),
+					titleCase: this.parseCodePoint(tc),
+					condition: cond || true,
+				});
+			}),
+			
+			this.read("StandardizedVariants", (seq, desc, envs) => {
+				const variant = {description: desc};
+				seq = this.parseCodePoint(seq);
+				envs = new Set(envs.split(" ").filter(Boolean));
+				if(envs.size) variant.environments = envs;
+				this.variationSequences.set(seq, variant);
+			}),
+			
+			this.read("TangutSources", (code, tag, value) => {
+				tag = {
+					kTGT_MergedSrc: "tangutMergedSource",
+					kRSTUnicode:    "radicalStrokeIndexes",
+				}[tag] || tag;
+				this.set(code, {[tag]: value});
+			}, "\t"),
+			
+			this.read("VerticalOrientation", (code, orientation) => {
+				this.set(code, {
+					verticalOrientation: {
+						U: "Upright",
+						R: "Rotate",
+						Tu: "Transformed or upright",
+						Tr: "Transformed or rotated",
+					}[orientation || "R"],
+				});
+			}),
+			
+			...`DictionaryIndices DictionaryLikeData IRGSources NumericValues
+			OtherMappings RadicalStrokeCounts Readings`.split(/\s+/).map(name => {
+				const nameKey = this.camelCase(name);
+				return this.read(`unihan/Unihan_${name}`, (code, key, value) => {
+					const char = this.get(this.parseCodePoint(code));
+					if(!char.han) char.han = {};
+					if(!char.han[nameKey]) char.han[nameKey] = {};
+					key = this.camelCase("k" === key[0] ? key.slice(1) : key);
+					char.han[nameKey][key] = value;
+				}, "\t");
+			}),
+			
+			this.read("unihan/Unihan_Variants", (code, type, value) => {
+				const char = this.get(this.parseCodePoint(code));
+				if(!char.han) char.han = {};
+				if(!char.han.variants) char.han.variants = {};
+				type = {
+					kSemanticVariant: "semantic",
+					kSimplifiedVariant: "simplified",
+					kSpecializedSemanticVariant: "specialisedSemantic",
+					kSpoofingVariant: "spoofing",
+					kTraditionalVariant: "traditional",
+					kZVariant: "z",
+				}[type] || type;
+				if(char.han.variants[type])
+					throw new TypeError(`Overwriting ${type} in ${code.toString(16)}`);
+				char.han.variants[type] = value;
+			}, "\t"),
 		]);
 	}
 	
