@@ -356,7 +356,7 @@ export default class UCD {
 				input = input.toUpperCase().trim();
 				if(input.startsWith("U+"))
 					input = input.slice(2);
-				if(input.length < 5)
+				if(input.length < 9)
 					input = parseInt(input, 16);
 				else if(input.includes(" "))
 					return input.split(" ").map(this.parseCodePoint);
@@ -394,6 +394,7 @@ export default class UCD {
 	}
 	
 	show(code, style = "full"){
+		code = this.parseCodePoint(code);
 		let info = this.get(code);
 		const props = [
 			...Object.getOwnPropertyNames(info).sort(),
