@@ -3,7 +3,7 @@ all: eal ucd
 
 # Link or clone Environment Abstraction Library
 eal:
-	git clone git@github.com:Alhadis/EAL.git $@
+	git clone --depth=1 'https://github.com/Alhadis/EAL.git' $@
 
 
 # Download the latest version of the Unicode Database
