@@ -1,4 +1,4 @@
-import {readLines} from "./eal/index.mjs";
+import {log, readLines} from "./eal/index.mjs";
 
 const DIR = decodeURIComponent(import.meta.url
 	.replace(/\/[^/]*$/, "")
@@ -31,6 +31,16 @@ export default class UCD {
 			.replace(/^[A-Z]+/, chars => chars.toLowerCase())
 			.replace(/_([A-Z]+)/g, (_, chars) => chars.toUpperCase())
 			.replace(/_/g, "");
+	}
+	
+	formatCodePoint(value){
+		switch(typeof value){
+			default: value = Number(value); // Fall-through
+			case "number": return "U+" + value.toString(16).toUpperCase().padStart(4, "0");
+			case "string": return !(value = value.toUpperCase()).startsWith("U+")
+				? "U+" + value
+				: value;
+		}
 	}
 	
 	get(code){
@@ -357,6 +367,35 @@ export default class UCD {
 				this.chars.set(code, {});
 			Object.assign(this.chars.get(code), props);
 		}
+	}
+	
+	show(code, style = "full"){
+		let info = this.get(code);
+		const props = [
+			...Object.getOwnPropertyNames(info).sort(),
+			...Object.getOwnPropertySymbols(info),
+		].map(key => [key, Object.getOwnPropertyDescriptor(info, key)]);
+		info = Object.create({}, Object.fromEntries(props));
+		
+		switch(style){
+			default:
+				if("Control" !== info.generalCategory && !info.whiteSpace){
+					const char = String.fromCodePoint(code);
+					log(`\x1B#3${char}\n\x1B#4${char}`);
+				}
+				log(info);
+				break;
+			
+			case "short":
+				log(`${this.formatCodePoint(code)} ${info.name}`);
+				break;
+		}
+	}
+	
+	showString(input, style){
+		input = [...input];
+		for(const char of input)
+			this.show(char.codePointAt(0), style);
 	}
 }
 

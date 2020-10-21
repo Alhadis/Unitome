@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import UCD from "./index.mjs";
-import {argv, log, isNode, warn, exit} from "./eal/index.mjs";
+import {argv, log, isNode, isTTY, readLines, warn, exit} from "./eal/index.mjs";
 
 (async () => {
 	
@@ -12,11 +12,13 @@ import {argv, log, isNode, warn, exit} from "./eal/index.mjs";
 	
 	const ucd = new UCD();
 	await ucd.load();
-	for(const arg of argv){
+	
+	if(!isTTY())
+		return readLines("/dev/stdin", line => ucd.showString(line, "short"), {fs: ""});
+	else for(const arg of argv){
 		if(Number.isNaN(parseInt(arg, 16)))
-			for(const codePoint of [...arg])
-				log(ucd.get(codePoint.codePointAt(0)));
-		else log(ucd.get(arg));
+			ucd.showString(arg);
+		else ucd.show(arg);
 	}
 	
 })().catch(error => {
