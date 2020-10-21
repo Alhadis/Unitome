@@ -322,6 +322,30 @@ export default class UCD {
 				char.han.variants[type] = value;
 			}, "\t"),
 		]);
+		
+		await Promise.all([
+			this.read("extracted/DerivedName", (code, name) => {
+				if(name.includes("*")){
+					code = this.parseCodePoint(code);
+					for(let n, i = code[0]; i < code[1]; ++i){
+						n = name.replace("*", i.toString(16).toUpperCase().padStart(4, "0"));
+						this.set(i, {name: n});
+					}
+				}
+				else this.set(code, {name});
+			}),
+			
+			this.read("extracted/DerivedNumericValues", (code, float, _, int) => {
+				if(int.includes("/")){
+					int = int.split("/");
+					float = +int[0] / +int[1];
+					if(Number.isNaN(float))
+						throw new TypeError(`Bad fraction: ${int}`);
+					this.set(code, {numericValue: float});
+				}
+				else this.set(code, {numericValue: parseFloat(float)});
+			}),
+		]);
 	}
 	
 	parseCodePoint(input){
