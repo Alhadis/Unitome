@@ -20,7 +20,6 @@ ucd:
 		--progress=bar \
 		--retr-symlinks \
 		--timestamping \
-		--xattr \
 		ftp://unicode.org/Public/UNIDATA/
 
 
