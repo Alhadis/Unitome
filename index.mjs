@@ -384,7 +384,7 @@ export default class UCD {
 		
 		code = this.parseCodePoint(code);
 		if(Array.isArray(code))
-			for(let i = code[0]; i < code[1]; ++i)
+			for(let i = code[0]; i <= code[1]; ++i)
 				this.set(i, props);
 		else{
 			if(!this.chars.has(code))
