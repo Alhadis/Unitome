@@ -1,0 +1,3 @@
+# FTP listings
+.listing        autocrlf=false eol=crlf linguist-language=Text whitespace=-cr-at-eol
+.listing.[0-9]* autocrlf=false eol=crlf linguist-language=Text whitespace=-cr-at-eol
